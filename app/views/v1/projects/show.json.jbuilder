@@ -13,5 +13,11 @@ json.notes do
   json.array! @project.notes do |note|
     json.id note.id
     json.title note.title
+    json.participants do
+      json.array! note.to_ids(:persons)
+    end
+    json.actions note.tasks do |task|
+      json.id task.id
+    end
   end
 end

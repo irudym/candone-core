@@ -7,6 +7,7 @@ class Note < ApplicationRecord
 
   has_and_belongs_to_many :persons
   has_and_belongs_to_many :tasks
+  has_and_belongs_to_many :projects
   # Validations
   validates_presence_of :markdown
 
@@ -16,21 +17,24 @@ class Note < ApplicationRecord
   end
 
   def contains_task?(id)
-    tasks.find(id)
+    self.tasks.find(id)
   end
 
-  def update_with_tasks_persons(tasks, person_ids, note_params)
+  def update_with_tasks_persons(add_tasks, person_ids, note_params)
     update note_params
-    unless tasks.nil?
+    unless add_tasks.nil?
       # create a list of new tasks
-      self.tasks = tasks.inject([]) do |acc, task|
+      self.tasks = add_tasks.inject([]) do |acc, task|
         begin
-          if contains_task? task[:id]
-            acc << task
-          end
+          acc << contains_task?(task[:id])
         rescue => details
-            acc << Task.create_with_persons!(task[:person_ids], title: task[:title], description: "Action from a note '#{title}'", urgency: 0)
+          new_task = Task.create_with_persons!(task[:person_ids], title: task[:title], description: "Action from a note '#{title}'", urgency: 0)
+          acc << new_task
+
+          # add new task to the related projects
+          projects.each { |project| project.tasks << new_task }
         end
+        acc
       end
     end
     unless person_ids.nil?

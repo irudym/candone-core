@@ -90,6 +90,15 @@ RSpec.describe 'Notes API', type: :request do
         }
       end
 
+      context 'complex request with provided parent project ID' do
+        let!(:projects) { create_list(:project, 3) }
+        before { post '/notes', params: { markdown: '#Test Note', project_id: [1] } }
+
+        it 'create a task and link it to the provided project' do
+          expect(json['projects']).to_not be_empty
+        end
+      end
+
       before { post '/notes', params: complex_request }
 
       it 'returns status code 201' do

@@ -5,12 +5,10 @@ class V1::NotesController < ApplicationController
   # GET /notes
   def index
     @notes = Note.all
-    # json_response NoteSerializer.new(@notes).serialized_json
   end
 
   # GET /notes/:id
   def show
-    #json_fields_response(@note, :ok, :id, :markdown, :created_at, :persons, :tasks)
   end
 
   # POST /notes
@@ -31,6 +29,17 @@ class V1::NotesController < ApplicationController
     @note = Note.create!(note_params)
     @note.tasks << tasks if tasks
     @note.persons = participants unless participants.empty?
+
+    # add to project id provided
+    if (params[:project_id])
+      params[:project_id].map do |project_id|
+        project = Project.find(project_id.to_i)
+        project.notes << @note if project
+
+        # add note's tasks to the project
+        project.tasks << @note.tasks
+      end
+    end
 
     render :show, status: 201
   end

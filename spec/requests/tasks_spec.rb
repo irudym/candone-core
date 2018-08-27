@@ -86,10 +86,18 @@ RSpec.describe 'Tasks API', type: :request do
       before { post '/tasks', params: {title: 'task with persons',
                                        description: 'just a task',
                                        persons: [0, 1, 2] }}
-
       it 'creates a task with persons' do
         expect(json['title']).to eq('task with persons')
         expect(json['persons']).to_not be_empty
+      end
+    end
+
+    context 'complex request with provided parent project ID' do
+      let!(:projects) { create_list(:project, 3) }
+      before { post '/tasks', params: {title: 'task related to project', description: 'A simple task', project_id: [1]}}
+
+      it 'create a task and link it to the provided project' do
+        expect(json['projects']).to_not be_empty
       end
     end
 

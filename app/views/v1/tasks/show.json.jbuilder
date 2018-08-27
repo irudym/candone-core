@@ -6,3 +6,6 @@ json.stage @task.stage
 json.persons do
   json.array! @task.to_ids(:persons)
 end
+json.projects do
+  json.array! @task.to_ids(:projects)
+end

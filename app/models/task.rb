@@ -4,6 +4,7 @@ class Task < ApplicationRecord
 
   has_and_belongs_to_many :persons
   has_and_belongs_to_many :notes
+  has_and_belongs_to_many :projects
   # Validations
   validates_presence_of :title
 

@@ -12,3 +12,6 @@ json.actions @note.tasks do |task|
     json.array! task.to_ids(:persons)
   end
 end
+json.projects do
+  json.array! @note.to_ids(:projects)
+end

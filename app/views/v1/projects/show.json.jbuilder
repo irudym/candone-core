@@ -1,5 +1,5 @@
 json.id @project.id
-json.created_at @project.created_at
+json.created_at @project.created_at.strftime("%d %B %Y")
 json.title @project.title
 json.description @project.description
 json.stage @project.stage
@@ -11,7 +11,7 @@ json.tasks do
     json.id task.id
     json.title task.title
     json.description task.description
-    json.created_at task.created_at
+    json.created_at task.created_at.strftime("%d %B %Y")
     json.stage task.stage
     json.urgency task.urgency
     json.persons do

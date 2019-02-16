@@ -8,6 +8,8 @@ end
 json.actions @note.tasks do |task|
   json.id task.id
   json.title task.title
+  json.created_at task.created_at.strftime("%d %B %Y")
+  json.urgency task.urgency
   json.owners do
     json.array! task.to_ids(:persons)
   end

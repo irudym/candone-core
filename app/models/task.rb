@@ -24,4 +24,8 @@ class Task < ApplicationRecord
     self.persons = Person.where(id: person_ids) unless Task.compare(person_ids, task_persons)
     self
   end
+
+  def short_description
+    description.truncate 200
+  end
 end

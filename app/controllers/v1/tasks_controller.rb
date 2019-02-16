@@ -9,7 +9,6 @@ class V1::TasksController < ApplicationController
   # POST /tasks
   def create
     @task = Task.create_with_persons!(params[:persons], task_params)
-
     if (params[:project_id])
       params[:project_id].map do |project_id|
         project = Project.find(project_id.to_i)

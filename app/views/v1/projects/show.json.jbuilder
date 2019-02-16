@@ -10,7 +10,7 @@ json.tasks do
   json.array! @project.tasks do |task|
     json.id task.id
     json.title task.title
-    json.description task.description
+    json.description task.short_description
     json.created_at task.created_at.strftime("%d %B %Y")
     json.stage task.stage
     json.urgency task.urgency

@@ -35,6 +35,11 @@ class V1::TasksController < ApplicationController
     head :no_content
   end
 
+  def analytic
+    @report = Task.analytic(Date.current)
+    # puts "RENDER: #{@report}"
+  end
+
 
   private
 
